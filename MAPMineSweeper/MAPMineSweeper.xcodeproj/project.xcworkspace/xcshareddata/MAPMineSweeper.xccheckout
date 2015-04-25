@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>D61292F8-29AB-4CD5-B529-5F8136EC57B6</string>
+	<key>IDESourceControlProjectName</key>
+	<string>project</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>AF1FD10CAF84A08F5BA1190573BDD8EBD83CC673</key>
+		<string>https://github.com/irfanlone/mine-sweeper.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>MAPMineSweeper/MAPMineSweeper.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>AF1FD10CAF84A08F5BA1190573BDD8EBD83CC673</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/irfanlone/mine-sweeper.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>AF1FD10CAF84A08F5BA1190573BDD8EBD83CC673</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>AF1FD10CAF84A08F5BA1190573BDD8EBD83CC673</string>
+			<key>IDESourceControlWCCName</key>
+			<string>mine-sweeper</string>
+		</dict>
+	</array>
+</dict>
+</plist>
