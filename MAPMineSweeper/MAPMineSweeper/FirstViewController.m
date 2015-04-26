@@ -7,6 +7,7 @@
 //
 
 #import "FirstViewController.h"
+#import "MAPGameView.h"
 
 @interface FirstViewController ()
 
@@ -17,6 +18,23 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    MAPGameView * gameView = [[MAPGameView alloc] init];
+    self.view = gameView;
+    
+    
+    UIView *tapView = self.view;  // this is our PuzzleView object
+    UITapGestureRecognizer *tapDoubleGR = [[UITapGestureRecognizer alloc]
+                                           initWithTarget:tapView action:@selector(tapDoubleHandler:)];
+    tapDoubleGR.numberOfTapsRequired = 2;         // set appropriate GR attributes
+    [tapView addGestureRecognizer:tapDoubleGR];   // add GR to view
+    
+    
+    UITapGestureRecognizer *tapSingleGR = [[UITapGestureRecognizer alloc]
+                                           initWithTarget:tapView action:@selector(tapSingleHandler:)];
+    tapSingleGR.numberOfTapsRequired = 1;         // set appropriate GR attributes
+    [tapSingleGR requireGestureRecognizerToFail: tapDoubleGR];  // prevent single tap recognition on double-tap
+    [tapView addGestureRecognizer:tapSingleGR];   // add GR to view
+
 }
 
 - (void)didReceiveMemoryWarning {

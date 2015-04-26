@@ -15,6 +15,7 @@
 		17B733B71AEC25FB001B8B8D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 17B733B61AEC25FB001B8B8D /* Images.xcassets */; };
 		17B733BA1AEC25FB001B8B8D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17B733B81AEC25FB001B8B8D /* LaunchScreen.xib */; };
 		17B733C61AEC25FB001B8B8D /* MAPMineSweeperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 17B733C51AEC25FB001B8B8D /* MAPMineSweeperTests.m */; };
+		17B733D11AEC4855001B8B8D /* MAPGameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17B733D01AEC4855001B8B8D /* MAPGameView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,8 @@
 		17B733BF1AEC25FB001B8B8D /* MAPMineSweeperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MAPMineSweeperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		17B733C41AEC25FB001B8B8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		17B733C51AEC25FB001B8B8D /* MAPMineSweeperTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MAPMineSweeperTests.m; sourceTree = "<group>"; };
+		17B733CF1AEC4855001B8B8D /* MAPGameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAPGameView.h; sourceTree = "<group>"; };
+		17B733D01AEC4855001B8B8D /* MAPGameView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAPGameView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,13 +87,11 @@
 		17B733A51AEC25FB001B8B8D /* MAPMineSweeper */ = {
 			isa = PBXGroup;
 			children = (
+				17B733D31AEC4C7B001B8B8D /* Assets */,
+				17B733D21AEC4C68001B8B8D /* View and Controller */,
+				17B733B31AEC25FB001B8B8D /* Main.storyboard */,
 				17B733AA1AEC25FB001B8B8D /* AppDelegate.h */,
 				17B733AB1AEC25FB001B8B8D /* AppDelegate.m */,
-				17B733AD1AEC25FB001B8B8D /* FirstViewController.h */,
-				17B733AE1AEC25FB001B8B8D /* FirstViewController.m */,
-				17B733B01AEC25FB001B8B8D /* SecondViewController.h */,
-				17B733B11AEC25FB001B8B8D /* SecondViewController.m */,
-				17B733B31AEC25FB001B8B8D /* Main.storyboard */,
 				17B733B61AEC25FB001B8B8D /* Images.xcassets */,
 				17B733B81AEC25FB001B8B8D /* LaunchScreen.xib */,
 				17B733A61AEC25FB001B8B8D /* Supporting Files */,
@@ -122,6 +123,26 @@
 				17B733C41AEC25FB001B8B8D /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		17B733D21AEC4C68001B8B8D /* View and Controller */ = {
+			isa = PBXGroup;
+			children = (
+				17B733CF1AEC4855001B8B8D /* MAPGameView.h */,
+				17B733D01AEC4855001B8B8D /* MAPGameView.m */,
+				17B733AD1AEC25FB001B8B8D /* FirstViewController.h */,
+				17B733AE1AEC25FB001B8B8D /* FirstViewController.m */,
+				17B733B01AEC25FB001B8B8D /* SecondViewController.h */,
+				17B733B11AEC25FB001B8B8D /* SecondViewController.m */,
+			);
+			name = "View and Controller";
+			sourceTree = "<group>";
+		};
+		17B733D31AEC4C7B001B8B8D /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -226,6 +247,7 @@
 			files = (
 				17B733B21AEC25FB001B8B8D /* SecondViewController.m in Sources */,
 				17B733AC1AEC25FB001B8B8D /* AppDelegate.m in Sources */,
+				17B733D11AEC4855001B8B8D /* MAPGameView.m in Sources */,
 				17B733AF1AEC25FB001B8B8D /* FirstViewController.m in Sources */,
 				17B733A91AEC25FB001B8B8D /* main.m in Sources */,
 			);
