@@ -17,5 +17,6 @@
 
 - (void) tapSingleHandler: (UITapGestureRecognizer *) sender;
 - (void) tapDoubleHandler: (UITapGestureRecognizer *) sender;
+- (void) placeMinesInTheGridRandomly:(NSInteger) noOfMines;
 
 @end

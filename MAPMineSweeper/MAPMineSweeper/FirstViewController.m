@@ -20,7 +20,7 @@
     // Do any additional setup after loading the view, typically from a nib.
     MAPGameView * gameView = [[MAPGameView alloc] init];
     self.view = gameView;
-    
+    [gameView placeMinesInTheGridRandomly:10];
     
     UIView *tapView = self.view;  // this is our PuzzleView object
     UITapGestureRecognizer *tapDoubleGR = [[UITapGestureRecognizer alloc]
