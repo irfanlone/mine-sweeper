@@ -34,6 +34,8 @@
     tapSingleGR.numberOfTapsRequired = 1;         // set appropriate GR attributes
     [tapSingleGR requireGestureRecognizerToFail: tapDoubleGR];  // prevent single tap recognition on double-tap
     [tapView addGestureRecognizer:tapSingleGR];   // add GR to view
+    
+    self.view.backgroundColor = [UIColor whiteColor];
 
 }
 
