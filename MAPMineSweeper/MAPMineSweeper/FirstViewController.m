@@ -9,6 +9,9 @@
 #import "FirstViewController.h"
 #import "MAPGameView.h"
 
+int noOfMines = 7;
+
+
 @interface FirstViewController ()
 
 @end
@@ -20,7 +23,7 @@
     // Do any additional setup after loading the view, typically from a nib.
     MAPGameView * gameView = [[MAPGameView alloc] init];
     self.view = gameView;
-    [gameView placeMinesInTheGridRandomly:10];
+    [gameView placeMinesInTheGridRandomly:noOfMines];
     
     UIView *tapView = self.view;  // this is our PuzzleView object
     UITapGestureRecognizer *tapDoubleGR = [[UITapGestureRecognizer alloc]

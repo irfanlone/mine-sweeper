@@ -8,13 +8,12 @@
 
 #import "MAPGameView.h"
 
-static int kNumberOfRows    = 4;
-static int kNumberOfColumns = 4;
-static int MINE             = -1;
-static int OPENED_CELL      = 101;
-static int FLAGGED_CELL     = 102;
-static int UNOPEND_CELL     = 103;
-static int EMPTY_CELL       = 0;
+static int kNumberOfRows        = 10;
+static int kNumberOfColumns     = 10;
+static int MINE                 = -1;
+static int FLAGGED_CELL         = 102;
+static int UNOPEND_CELL         = 103;
+static int OPENED_EMPTY_CELL    = 0;
 
 
 CGRect mineFieldFrame;
@@ -22,7 +21,6 @@ CGRect mineFieldFrame;
 int row;
 int col;
 int mineGrid [10][10];
-int noOfMines               = 10;
 
 
 @implementation MAPGameView
@@ -48,7 +46,7 @@ int noOfMines               = 10;
             CGPoint xy = CGPointMake(mineFieldFrame.origin.x + (j*self.dw) + (self.dw/3), mineFieldFrame.origin.y + (i*self.dh) + (self.dh/3));
 
             if (mineGrid[i][j] == FLAGGED_CELL) {
-                UIImage * flagImage = [UIImage imageNamed:@""];
+                UIImage * flagImage = [UIImage imageNamed:@"flagButton.png"];
                 [flagImage drawInRect:imageRect];
             }
             
@@ -57,7 +55,7 @@ int noOfMines               = 10;
                 [unOpenedCellImage drawInRect:imageRect];
             }
             
-            else if(mineGrid[i][j] == EMPTY_CELL){
+            else if(mineGrid[i][j] == OPENED_EMPTY_CELL){
                 NSString *cell = @"";
                 [cell drawAtPoint: xy withAttributes: attrsDictionary];
             }
@@ -90,52 +88,54 @@ int noOfMines               = 10;
 
 - (void) setTheGridRecursivelyWithRow:(NSInteger) row andColumn:(NSInteger) col
 {
-    NSInteger count         = 0;
-    NSInteger startingRow   = 0;
-    NSInteger endingRow     = 0;
-    NSInteger startingCol   = 0;
-    NSInteger endingCol     = 0;
-   
-    if (mineGrid[row][col] != MINE) {
-        if (row == 0) {
-            startingRow = row;
-        } else {
-            startingRow = row -1;
-        }
-        if (col == 0) {
-            startingCol = col;
-        } else {
-            startingCol = col - 1;
-        }
-        if (row == kNumberOfRows-1) {
-            endingRow = row;
-        } else {
-            endingRow = row + 1;
-        }
-        if (col == kNumberOfColumns-1) {
-            endingCol = col;
-        } else {
-            endingCol = col + 1;
-        }
-
-        for (int i = (int)startingRow; i <= endingRow; ++i) {
-            for (int j = (int)startingCol ; j <= endingCol; ++j) {
-                if (mineGrid[i][j] == MINE || mineGrid[i][j] == FLAGGED_CELL) {
-                    count++;
-                }
-            }
-        }
+    if (mineGrid[row][col] != MINE && mineGrid[row][col] != FLAGGED_CELL && mineGrid[row][col] != OPENED_EMPTY_CELL) {
+        NSInteger count         = 0;
+        NSInteger startingRow   = 0;
+        NSInteger endingRow     = 0;
+        NSInteger startingCol   = 0;
+        NSInteger endingCol     = 0;
         
-        if (count == 0) {
-            mineGrid[row][col] = EMPTY_CELL;
+        if (mineGrid[row][col] != MINE) {
+            if (row == 0) {
+                startingRow = row;
+            } else {
+                startingRow = row -1;
+            }
+            if (col == 0) {
+                startingCol = col;
+            } else {
+                startingCol = col - 1;
+            }
+            if (row == kNumberOfRows-1) {
+                endingRow = row;
+            } else {
+                endingRow = row + 1;
+            }
+            if (col == kNumberOfColumns-1) {
+                endingCol = col;
+            } else {
+                endingCol = col + 1;
+            }
+            
             for (int i = (int)startingRow; i <= endingRow; ++i) {
                 for (int j = (int)startingCol ; j <= endingCol; ++j) {
-                    [self setTheGridRecursivelyWithRow:i andColumn:j];
+                    if (mineGrid[i][j] == MINE || mineGrid[i][j] == FLAGGED_CELL) {
+                        count++;
+                    }
                 }
             }
-        } else
-        {
-            mineGrid[row][col] = (int)count;
+            
+            if (count == 0) {
+                mineGrid[row][col] = OPENED_EMPTY_CELL;
+                for (int i = (int)startingRow; i <= endingRow; ++i) {
+                    for (int j = (int)startingCol ; j <= endingCol; ++j) {
+                        [self setTheGridRecursivelyWithRow:i andColumn:j];
+                    }
+                }
+            } else
+            {
+                mineGrid[row][col] = (int)count;
+            }
         }
     }
 }
@@ -194,17 +194,20 @@ int noOfMines               = 10;
     if (sender.state == UIGestureRecognizerStateEnded) {
         CGPoint locationTapped;
         locationTapped = [sender locationInView: self];
-        float row = (locationTapped.x - mineFieldFrame.origin.x )/ self.dw;
-        float col = (locationTapped.y - mineFieldFrame.origin.y)/ self.dh ;
+        float col = (locationTapped.x - mineFieldFrame.origin.x )/ self.dw;
+        float row = (locationTapped.y - mineFieldFrame.origin.y)/ self.dh ;
         if (row < 0 || col < 0 ) {
             return;
         }
         if (row < 10 && col < 10) {
+            self.row = row;
+            self.col = col;
             NSLog(@"Double tap recognized");
             NSLog( @"row, col = %f, %f", row, col );
-            [self setTheGridRecursivelyWithRow:row andColumn:col];
+            mineGrid[self.row][self.col] = FLAGGED_CELL;
         }
     }
+    [self setNeedsDisplay];
 }
 
 @end
