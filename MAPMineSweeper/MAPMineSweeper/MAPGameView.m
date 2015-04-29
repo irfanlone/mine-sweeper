@@ -16,6 +16,7 @@ static int FLAGGED_CELL     = 102;
 static int UNOPEND_CELL     = 103;
 static int EMPTY_CELL       = 0;
 
+
 CGRect mineFieldFrame;
 
 int row;
