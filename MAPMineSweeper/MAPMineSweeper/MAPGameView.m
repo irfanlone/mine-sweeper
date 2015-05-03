@@ -12,9 +12,10 @@ static int kNumberOfRows        = 10;
 static int kNumberOfColumns     = 10;
 static int MINE                 = -1;
 static int FLAGGED_CELL         = 102;
-static int UNOPEND_CELL         = 103;
+static int FLAG_ON_MINE         = 103;
+static int UNOPEND_CELL         = 104;
 static int OPENED_EMPTY_CELL    = 0;
-
+BOOL gameOver                   = NO;
 
 CGRect mineFieldFrame;
 
@@ -42,10 +43,10 @@ int mineGrid [10][10];
     for (int i = 0; i < kNumberOfColumns; ++i) {
         for (int j = 0; j < kNumberOfRows; ++j) {
             
-            CGRect imageRect = CGRectMake(mineFieldFrame.origin.x + (j*self.dw), mineFieldFrame.origin.y + (i*self.dh), self.dh, self.dw);
+            CGRect imageRect = CGRectMake(mineFieldFrame.origin.x + (j*self.dw), mineFieldFrame.origin.y + (i*self.dh), self.dw, self.dh);
             CGPoint xy = CGPointMake(mineFieldFrame.origin.x + (j*self.dw) + (self.dw/3), mineFieldFrame.origin.y + (i*self.dh) + (self.dh/3));
 
-            if (mineGrid[i][j] == FLAGGED_CELL) {
+            if (mineGrid[i][j] == FLAGGED_CELL || mineGrid[i][j] == FLAG_ON_MINE) {
                 UIImage * flagImage = [UIImage imageNamed:@"flagButton.png"];
                 [flagImage drawInRect:imageRect];
             }
@@ -63,6 +64,13 @@ int mineGrid [10][10];
             else {
                 NSString *cell = [[NSNumber numberWithInt:mineGrid[i][j]] stringValue];
                 [cell drawAtPoint: xy withAttributes: attrsDictionary];
+            }
+            
+            if (gameOver) {
+                if (mineGrid[i][j] == MINE || mineGrid[i][j] == FLAG_ON_MINE) {
+                    UIImage * flagImage = [UIImage imageNamed:@"mine.png"];
+                    [flagImage drawInRect:imageRect];
+                }
             }
         }
     }
@@ -82,13 +90,13 @@ int mineGrid [10][10];
         CGContextMoveToPoint( context,frame.origin.x + (i * self.dw), frame.origin.y );
         CGContextAddLineToPoint( context, frame.origin.x + (i * self.dw), frame.origin.y + height );
     }
-    [[UIColor redColor] setStroke];             // use gray as stroke color
+    [[UIColor blackColor] setStroke];             // use gray as stroke color
     CGContextDrawPath( context, kCGPathStroke ); // execute collected drawing ops
 }
 
 - (void) setTheGridRecursivelyWithRow:(NSInteger) row andColumn:(NSInteger) col
 {
-    if (mineGrid[row][col] != MINE && mineGrid[row][col] != FLAGGED_CELL && mineGrid[row][col] != OPENED_EMPTY_CELL) {
+    if (mineGrid[row][col] != MINE && mineGrid[row][col] != FLAGGED_CELL && mineGrid[row][col] != FLAG_ON_MINE && mineGrid[row][col] == UNOPEND_CELL) {
         NSInteger count         = 0;
         NSInteger startingRow   = 0;
         NSInteger endingRow     = 0;
@@ -119,7 +127,7 @@ int mineGrid [10][10];
             
             for (int i = (int)startingRow; i <= endingRow; ++i) {
                 for (int j = (int)startingCol ; j <= endingCol; ++j) {
-                    if (mineGrid[i][j] == MINE || mineGrid[i][j] == FLAGGED_CELL) {
+                    if (mineGrid[i][j] == MINE || mineGrid[i][j] == FLAG_ON_MINE) {
                         count++;
                     }
                 }
@@ -182,6 +190,9 @@ int mineGrid [10][10];
             // game over condition
             if (mineGrid[self.row][self.col] == MINE) {
                 [self gameOver];
+                 gameOver = YES;
+                [self setNeedsDisplay];
+                return;
             }
             [self setTheGridRecursivelyWithRow:row andColumn:col];
         }
@@ -204,7 +215,15 @@ int mineGrid [10][10];
             self.col = col;
             NSLog(@"Double tap recognized");
             NSLog( @"row, col = %f, %f", row, col );
-            mineGrid[self.row][self.col] = FLAGGED_CELL;
+            if (mineGrid[self.row][self.col] == FLAGGED_CELL) {
+                mineGrid[self.row][self.col] = UNOPEND_CELL;
+            } else if(mineGrid[self.row][self.col] == FLAG_ON_MINE) {
+                mineGrid[self.row][self.col] = MINE;
+            } else if (mineGrid[self.row][self.col] == MINE) {
+                mineGrid[self.row][self.col] = FLAG_ON_MINE;
+            } else {
+                mineGrid[self.row][self.col] = FLAGGED_CELL;
+            }
         }
     }
     [self setNeedsDisplay];

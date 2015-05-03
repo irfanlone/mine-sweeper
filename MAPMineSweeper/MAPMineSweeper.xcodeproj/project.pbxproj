@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		179AADA41AF5C9710009D1E4 /* Mine.png in Resources */ = {isa = PBXBuildFile; fileRef = 179AADA31AF5C9710009D1E4 /* Mine.png */; };
 		17B733A91AEC25FB001B8B8D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 17B733A81AEC25FB001B8B8D /* main.m */; };
 		17B733AC1AEC25FB001B8B8D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 17B733AB1AEC25FB001B8B8D /* AppDelegate.m */; };
 		17B733AF1AEC25FB001B8B8D /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17B733AE1AEC25FB001B8B8D /* FirstViewController.m */; };
@@ -31,6 +32,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		179AADA31AF5C9710009D1E4 /* Mine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Mine.png; sourceTree = "<group>"; };
 		17B733A31AEC25FB001B8B8D /* MAPMineSweeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MAPMineSweeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		17B733A71AEC25FB001B8B8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		17B733A81AEC25FB001B8B8D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 		17B733D31AEC4C7B001B8B8D /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				179AADA31AF5C9710009D1E4 /* Mine.png */,
 				17B733D61AF0A673001B8B8D /* FlagButton.png */,
 				17B733D41AEF537E001B8B8D /* Cell.png */,
 			);
@@ -231,6 +234,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				179AADA41AF5C9710009D1E4 /* Mine.png in Resources */,
 				17B733B51AEC25FB001B8B8D /* Main.storyboard in Resources */,
 				17B733BA1AEC25FB001B8B8D /* LaunchScreen.xib in Resources */,
 				17B733D71AF0A673001B8B8D /* FlagButton.png in Resources */,
