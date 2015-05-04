@@ -7,6 +7,7 @@
 //
 
 #import "MAPGameView.h"
+#import "FirstViewController.h"
 
 static int kNumberOfRows        = 10;
 static int kNumberOfColumns     = 10;
@@ -25,7 +26,6 @@ int mineGrid [10][10];
 
 
 @implementation MAPGameView
-
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
@@ -164,12 +164,37 @@ int mineGrid [10][10];
 
 - (void) gameOver
 {
+    // TODO: UIAlertView is deprecated in iOS8, Use UIAlertController
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Game Over"
-                                                 message:@"no message"
+                                                 message:@"Would you like to play again?"
                                                 delegate:self
-                                       cancelButtonTitle:@"OK"
-                                       otherButtonTitles:nil, nil];
+                                       cancelButtonTitle:@"Ok"
+                                       otherButtonTitles:@"Cancel", nil];
     [alertView show];
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    // the user clicked OK
+    if (buttonIndex == 0) {
+        // Handle reset new game here
+        [self resetGame];
+    }
+    else if (buttonIndex == 1)
+    {
+    }
+}
+
+- (void) resetGame
+{
+    gameOver = NO;
+    NSInteger  numberOfMines = [[NSUserDefaults standardUserDefaults] integerForKey:kNumberOfMinesPrefKey];
+    [UIView animateWithDuration:.01
+                     animations:^{
+                         [self placeMinesInTheGridRandomly:numberOfMines];
+                         [self setNeedsDisplay];
+                     }
+                     completion:^(BOOL finished){
+                     }];
 }
 
 - (void) tapSingleHandler: (UITapGestureRecognizer *) sender

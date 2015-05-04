@@ -10,10 +10,11 @@
 #import "MAPGameView.h"
 
 int noOfMines = 7;
+NSString * kNumberOfMinesPrefKey = @"numberOfMinesPrefKey";
 
 
 @interface FirstViewController ()
-
+@property (nonatomic, strong) MAPGameView * gameView;
 @end
 
 @implementation FirstViewController
@@ -21,9 +22,16 @@ int noOfMines = 7;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    MAPGameView * gameView = [[MAPGameView alloc] init];
-    self.view = gameView;
-    [gameView placeMinesInTheGridRandomly:noOfMines];
+    
+}
+
+- (IBAction)newGamePressed:(id)sender {
+    
+    self.gameView = [[MAPGameView alloc] init];
+    self.view = self.gameView;
+    [self.gameView placeMinesInTheGridRandomly:noOfMines];
+    [[NSUserDefaults standardUserDefaults] setInteger:noOfMines forKey:kNumberOfMinesPrefKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     
     UIView *tapView = self.view;  // this is our PuzzleView object
     UITapGestureRecognizer *tapDoubleGR = [[UITapGestureRecognizer alloc]
@@ -37,10 +45,14 @@ int noOfMines = 7;
     tapSingleGR.numberOfTapsRequired = 1;         // set appropriate GR attributes
     [tapSingleGR requireGestureRecognizerToFail: tapDoubleGR];  // prevent single tap recognition on double-tap
     [tapView addGestureRecognizer:tapSingleGR];   // add GR to view
-    
     self.view.backgroundColor = [UIColor whiteColor];
-
 }
+
+//- (void) refreshDisplay
+//{
+//    [self.gameView removeFromSuperview];
+//    [self.view didMoveToSuperview];
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FirstViewController : UIViewController
+FOUNDATION_EXPORT NSString * kNumberOfMinesPrefKey;
 
+@interface FirstViewController : UIViewController<UIAlertViewDelegate>
 
 @end
 
