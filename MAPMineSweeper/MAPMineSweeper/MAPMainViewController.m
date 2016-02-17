@@ -2,27 +2,26 @@
 //  FirstViewController.m
 //  MAPMineSweeper
 //
-//  Created by Irfan Lone on 4/25/15.
-//  Copyright (c) 2015 Irfan Programs. All rights reserved.
+//  Created by Irfan Lone on 10/25/14.
+//  Copyright (c) 2014 Irfan Programs. All rights reserved.
 //
 
-#import "FirstViewController.h"
+#import "MAPMainViewController.h"
 #import "MAPGameView.h"
 
 int noOfMines = 7;
 NSString * kNumberOfMinesPrefKey = @"numberOfMinesPrefKey";
 
 
-@interface FirstViewController ()
+@interface MAPMainViewController ()
 @property (nonatomic, strong) MAPGameView * gameView;
 @end
 
-@implementation FirstViewController
+@implementation MAPMainViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
 }
 
 - (IBAction)newGamePressed:(id)sender {
@@ -39,7 +38,6 @@ NSString * kNumberOfMinesPrefKey = @"numberOfMinesPrefKey";
     tapDoubleGR.numberOfTapsRequired = 2;         // set appropriate GR attributes
     [tapView addGestureRecognizer:tapDoubleGR];   // add GR to view
     
-    
     UITapGestureRecognizer *tapSingleGR = [[UITapGestureRecognizer alloc]
                                            initWithTarget:tapView action:@selector(tapSingleHandler:)];
     tapSingleGR.numberOfTapsRequired = 1;         // set appropriate GR attributes
@@ -48,11 +46,10 @@ NSString * kNumberOfMinesPrefKey = @"numberOfMinesPrefKey";
     self.view.backgroundColor = [UIColor whiteColor];
 }
 
-//- (void) refreshDisplay
-//{
-//    [self.gameView removeFromSuperview];
-//    [self.view didMoveToSuperview];
-//}
+- (void) refreshDisplay {
+    [self.gameView removeFromSuperview];
+    [self.view didMoveToSuperview];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

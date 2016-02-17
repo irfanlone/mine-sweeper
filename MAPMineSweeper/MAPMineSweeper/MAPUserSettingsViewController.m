@@ -2,17 +2,17 @@
 //  SecondViewController.m
 //  MAPMineSweeper
 //
-//  Created by Irfan Lone on 4/25/15.
-//  Copyright (c) 2015 Irfan Programs. All rights reserved.
+//  Created by Irfan Lone on 10/25/14.
+//  Copyright (c) 2014 Irfan Programs. All rights reserved.
 //
 
-#import "SecondViewController.h"
+#import "MAPUserSettingsViewController.h"
 
-@interface SecondViewController ()
+@interface MAPUserSettingsViewController ()
 
 @end
 
-@implementation SecondViewController
+@implementation MAPUserSettingsViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

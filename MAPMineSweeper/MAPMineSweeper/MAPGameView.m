@@ -2,12 +2,12 @@
 //  MAPGameView.m
 //  MAPMineSweeper
 //
-//  Created by Irfan Lone on 4/25/15.
-//  Copyright (c) 2015 Irfan Programs. All rights reserved.
+//  Created by Irfan Lone on 10/25/14.
+//  Copyright (c) 2014 Irfan Programs. All rights reserved.
 //
 
 #import "MAPGameView.h"
-#import "FirstViewController.h"
+#import "MAPMainViewController.h"
 
 static int kNumberOfRows        = 10;
 static int kNumberOfColumns     = 10;
@@ -18,14 +18,15 @@ static int UNOPEND_CELL         = 104;
 static int OPENED_EMPTY_CELL    = 0;
 BOOL gameOver                   = NO;
 
+// TODO: fix these
 CGRect mineFieldFrame;
-
 int row;
 int col;
 int mineGrid [10][10];
 
 
 @implementation MAPGameView
+
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
@@ -42,30 +43,24 @@ int mineGrid [10][10];
     NSDictionary *attrsDictionary = [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName,[NSNumber numberWithFloat:1.0], NSBaselineOffsetAttributeName, nil];
     for (int i = 0; i < kNumberOfColumns; ++i) {
         for (int j = 0; j < kNumberOfRows; ++j) {
-            
             CGRect imageRect = CGRectMake(mineFieldFrame.origin.x + (j*self.dw), mineFieldFrame.origin.y + (i*self.dh), self.dw, self.dh);
             CGPoint xy = CGPointMake(mineFieldFrame.origin.x + (j*self.dw) + (self.dw/3), mineFieldFrame.origin.y + (i*self.dh) + (self.dh/3));
-
             if (mineGrid[i][j] == FLAGGED_CELL || mineGrid[i][j] == FLAG_ON_MINE) {
                 UIImage * flagImage = [UIImage imageNamed:@"flagButton.png"];
                 [flagImage drawInRect:imageRect];
             }
-            
             else if(mineGrid[i][j] == MINE || mineGrid[i][j] == UNOPEND_CELL){
                 UIImage * unOpenedCellImage = [UIImage imageNamed:@"cell.png"];
                 [unOpenedCellImage drawInRect:imageRect];
             }
-            
             else if(mineGrid[i][j] == OPENED_EMPTY_CELL){
                 NSString *cell = @"";
                 [cell drawAtPoint: xy withAttributes: attrsDictionary];
             }
-
             else {
                 NSString *cell = [[NSNumber numberWithInt:mineGrid[i][j]] stringValue];
                 [cell drawAtPoint: xy withAttributes: attrsDictionary];
             }
-            
             if (gameOver) {
                 if (mineGrid[i][j] == MINE || mineGrid[i][j] == FLAG_ON_MINE) {
                     UIImage * flagImage = [UIImage imageNamed:@"mine.png"];
@@ -74,18 +69,13 @@ int mineGrid [10][10];
             }
         }
     }
-
-    
-    
     CGContextBeginPath( context );
-    for ( int i = 0;  i < kNumberOfRows + 1;  ++i )
-    {
+    for (int i = 0; i < kNumberOfRows+1; ++i) {
         // draw horizontal grid line
         CGContextMoveToPoint( context, frame.origin.x, frame.origin.y + (i * self.dh) );
         CGContextAddLineToPoint( context, frame. origin.x + width , frame.origin.y + (i * self.dh) );
     }
-    for ( int i = 0;  i < kNumberOfColumns + 1;  ++i )
-    {
+    for (int i = 0; i < kNumberOfColumns+1; ++i) {
         // draw vertical grid line
         CGContextMoveToPoint( context,frame.origin.x + (i * self.dw), frame.origin.y );
         CGContextAddLineToPoint( context, frame.origin.x + (i * self.dw), frame.origin.y + height );
@@ -94,8 +84,7 @@ int mineGrid [10][10];
     CGContextDrawPath( context, kCGPathStroke ); // execute collected drawing ops
 }
 
-- (void) setTheGridRecursivelyWithRow:(NSInteger) row andColumn:(NSInteger) col
-{
+- (void)setTheGridRecursivelyWithRow:(NSInteger)row andColumn:(NSInteger)col {
     if (mineGrid[row][col] != MINE && mineGrid[row][col] != FLAGGED_CELL && mineGrid[row][col] != FLAG_ON_MINE && mineGrid[row][col] == UNOPEND_CELL) {
         NSInteger count         = 0;
         NSInteger startingRow   = 0;
@@ -124,7 +113,6 @@ int mineGrid [10][10];
             } else {
                 endingCol = col + 1;
             }
-            
             for (int i = (int)startingRow; i <= endingRow; ++i) {
                 for (int j = (int)startingCol ; j <= endingCol; ++j) {
                     if (mineGrid[i][j] == MINE || mineGrid[i][j] == FLAG_ON_MINE) {
@@ -132,7 +120,6 @@ int mineGrid [10][10];
                     }
                 }
             }
-            
             if (count == 0) {
                 mineGrid[row][col] = OPENED_EMPTY_CELL;
                 for (int i = (int)startingRow; i <= endingRow; ++i) {
@@ -140,16 +127,15 @@ int mineGrid [10][10];
                         [self setTheGridRecursivelyWithRow:i andColumn:j];
                     }
                 }
-            } else
-            {
+            }
+            else {
                 mineGrid[row][col] = (int)count;
             }
         }
     }
 }
 
-- (void) placeMinesInTheGridRandomly:(NSInteger) noOfMines
-{
+- (void)placeMinesInTheGridRandomly:(NSInteger)noOfMines {
     for (int i = 0; i < kNumberOfColumns; ++i) {
         for (int j = 0; j < kNumberOfRows; ++j) {
             mineGrid[i][j] = UNOPEND_CELL;
@@ -162,8 +148,7 @@ int mineGrid [10][10];
     }
 }
 
-- (void) gameOver
-{
+- (void)gameOver {
     // TODO: UIAlertView is deprecated in iOS8, Use UIAlertController
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Game Over"
                                                  message:@"Would you like to play again?"
@@ -179,13 +164,11 @@ int mineGrid [10][10];
         // Handle reset new game here
         [self resetGame];
     }
-    else if (buttonIndex == 1)
-    {
+    else if (buttonIndex == 1) {
     }
 }
 
-- (void) resetGame
-{
+- (void)resetGame {
     gameOver = NO;
     NSInteger  numberOfMines = [[NSUserDefaults standardUserDefaults] integerForKey:kNumberOfMinesPrefKey];
     [UIView animateWithDuration:.01
@@ -197,8 +180,7 @@ int mineGrid [10][10];
                      }];
 }
 
-- (void) tapSingleHandler: (UITapGestureRecognizer *) sender
-{
+- (void)tapSingleHandler:(UITapGestureRecognizer *)sender {
     if (sender.state == UIGestureRecognizerStateEnded) {
         CGPoint locationTapped;
         locationTapped = [sender locationInView: self];
@@ -225,8 +207,7 @@ int mineGrid [10][10];
     [self setNeedsDisplay];
 }
 
-- (void) tapDoubleHandler: (UITapGestureRecognizer *) sender
-{
+- (void)tapDoubleHandler:(UITapGestureRecognizer *)sender {
     if (sender.state == UIGestureRecognizerStateEnded) {
         CGPoint locationTapped;
         locationTapped = [sender locationInView: self];

@@ -1,5 +1,5 @@
 //
-//  AppDelegate.h
+//  FirstViewController.h
 //  MAPMineSweeper
 //
 //  Created by Irfan Lone on 10/25/14.
@@ -8,10 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+FOUNDATION_EXPORT NSString * kNumberOfMinesPrefKey;
 
-@property (strong, nonatomic) UIWindow *window;
-
+@interface MAPMainViewController : UIViewController<UIAlertViewDelegate>
 
 @end
 
