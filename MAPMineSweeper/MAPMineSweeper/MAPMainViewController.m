@@ -9,10 +9,6 @@
 #import "MAPMainViewController.h"
 #import "MAPGameView.h"
 
-int noOfMines = 7;
-NSString * kNumberOfMinesPrefKey = @"numberOfMinesPrefKey";
-
-
 @interface MAPMainViewController ()
 @property (nonatomic, strong) MAPGameView * gameView;
 @end
@@ -22,15 +18,13 @@ NSString * kNumberOfMinesPrefKey = @"numberOfMinesPrefKey";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+
 }
 
 - (IBAction)newGamePressed:(id)sender {
     
     self.gameView = [[MAPGameView alloc] init];
     self.view = self.gameView;
-    [self.gameView placeMinesInTheGridRandomly:noOfMines];
-    [[NSUserDefaults standardUserDefaults] setInteger:noOfMines forKey:kNumberOfMinesPrefKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
     
     UIView *tapView = self.view;  // this is our PuzzleView object
     UITapGestureRecognizer *tapDoubleGR = [[UITapGestureRecognizer alloc]
@@ -46,7 +40,7 @@ NSString * kNumberOfMinesPrefKey = @"numberOfMinesPrefKey";
     self.view.backgroundColor = [UIColor whiteColor];
 }
 
-- (void) refreshDisplay {
+- (void)refreshDisplay {
     [self.gameView removeFromSuperview];
     [self.view didMoveToSuperview];
 }
