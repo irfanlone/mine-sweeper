@@ -179,8 +179,8 @@ NSString *const kGameFinishedAlertNotification = @"GameFinishedAlertNotification
         }
     }
     for (int mineCount = 0; mineCount < noOfMines; ++mineCount) {
-        NSInteger randomNumber1 = arc4random_uniform(self.noOfRows)%self.noOfRows;
-        NSInteger randomNumber2 = arc4random_uniform(self.noOfCols)%self.noOfCols;
+        NSInteger randomNumber1 = arc4random() % self.noOfRows;
+        NSInteger randomNumber2 = arc4random() % self.noOfCols;
         mineGrid[randomNumber1][randomNumber2] = MINE;
     }
 }
