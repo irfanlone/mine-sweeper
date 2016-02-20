@@ -16,12 +16,6 @@
 		17B733BA1AEC25FB001B8B8D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17B733B81AEC25FB001B8B8D /* LaunchScreen.xib */; };
 		17B733C61AEC25FB001B8B8D /* MAPMineSweeperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 17B733C51AEC25FB001B8B8D /* MAPMineSweeperTests.m */; };
 		17B733D11AEC4855001B8B8D /* MAPGameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17B733D01AEC4855001B8B8D /* MAPGameView.m */; };
-		17DE84991C74816C00EDC5F8 /* Agent.png in Resources */ = {isa = PBXBuildFile; fileRef = 17DE84931C74816C00EDC5F8 /* Agent.png */; };
-		17DE849A1C74816C00EDC5F8 /* Cell.png in Resources */ = {isa = PBXBuildFile; fileRef = 17DE84941C74816C00EDC5F8 /* Cell.png */; };
-		17DE849B1C74816C00EDC5F8 /* FlagButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 17DE84951C74816C00EDC5F8 /* FlagButton.png */; };
-		17DE849C1C74816C00EDC5F8 /* Games.png in Resources */ = {isa = PBXBuildFile; fileRef = 17DE84961C74816C00EDC5F8 /* Games.png */; };
-		17DE849D1C74816C00EDC5F8 /* Mine.png in Resources */ = {isa = PBXBuildFile; fileRef = 17DE84971C74816C00EDC5F8 /* Mine.png */; };
-		17DE849E1C74816C00EDC5F8 /* NewGame.png in Resources */ = {isa = PBXBuildFile; fileRef = 17DE84981C74816C00EDC5F8 /* NewGame.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,12 +46,6 @@
 		17B733C51AEC25FB001B8B8D /* MAPMineSweeperTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MAPMineSweeperTests.m; sourceTree = "<group>"; };
 		17B733CF1AEC4855001B8B8D /* MAPGameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAPGameView.h; sourceTree = "<group>"; };
 		17B733D01AEC4855001B8B8D /* MAPGameView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAPGameView.m; sourceTree = "<group>"; };
-		17DE84931C74816C00EDC5F8 /* Agent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Agent.png; path = assets/Agent.png; sourceTree = "<group>"; };
-		17DE84941C74816C00EDC5F8 /* Cell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Cell.png; path = assets/Cell.png; sourceTree = "<group>"; };
-		17DE84951C74816C00EDC5F8 /* FlagButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FlagButton.png; path = assets/FlagButton.png; sourceTree = "<group>"; };
-		17DE84961C74816C00EDC5F8 /* Games.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Games.png; path = assets/Games.png; sourceTree = "<group>"; };
-		17DE84971C74816C00EDC5F8 /* Mine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Mine.png; path = assets/Mine.png; sourceTree = "<group>"; };
-		17DE84981C74816C00EDC5F8 /* NewGame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NewGame.png; path = assets/NewGame.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,7 +87,6 @@
 		17B733A51AEC25FB001B8B8D /* MAPMineSweeper */ = {
 			isa = PBXGroup;
 			children = (
-				17B733D31AEC4C7B001B8B8D /* Assets */,
 				17B733D21AEC4C68001B8B8D /* View and Controller */,
 				17B733B31AEC25FB001B8B8D /* Main.storyboard */,
 				17B733AA1AEC25FB001B8B8D /* AppDelegate.h */,
@@ -148,19 +135,6 @@
 				17B733B11AEC25FB001B8B8D /* MAPUserSettingsViewController.m */,
 			);
 			name = "View and Controller";
-			sourceTree = "<group>";
-		};
-		17B733D31AEC4C7B001B8B8D /* Assets */ = {
-			isa = PBXGroup;
-			children = (
-				17DE84931C74816C00EDC5F8 /* Agent.png */,
-				17DE84941C74816C00EDC5F8 /* Cell.png */,
-				17DE84951C74816C00EDC5F8 /* FlagButton.png */,
-				17DE84961C74816C00EDC5F8 /* Games.png */,
-				17DE84971C74816C00EDC5F8 /* Mine.png */,
-				17DE84981C74816C00EDC5F8 /* NewGame.png */,
-			);
-			name = Assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -244,14 +218,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				17B733B51AEC25FB001B8B8D /* Main.storyboard in Resources */,
-				17DE849B1C74816C00EDC5F8 /* FlagButton.png in Resources */,
 				17B733BA1AEC25FB001B8B8D /* LaunchScreen.xib in Resources */,
-				17DE849E1C74816C00EDC5F8 /* NewGame.png in Resources */,
-				17DE849A1C74816C00EDC5F8 /* Cell.png in Resources */,
-				17DE849D1C74816C00EDC5F8 /* Mine.png in Resources */,
-				17DE849C1C74816C00EDC5F8 /* Games.png in Resources */,
 				17B733B71AEC25FB001B8B8D /* Images.xcassets in Resources */,
-				17DE84991C74816C00EDC5F8 /* Agent.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

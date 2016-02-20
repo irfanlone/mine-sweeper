@@ -81,11 +81,11 @@ int mineGrid [10][10];
             CGRect imageRect = CGRectMake(self.mineFieldFrame.origin.x + (j*self.dw), self.mineFieldFrame.origin.y + (i*self.dh), self.dw, self.dh);
             CGPoint xy = CGPointMake(self.mineFieldFrame.origin.x + (j*self.dw) + (self.dw/3), self.mineFieldFrame.origin.y + (i*self.dh) + (self.dh/3));
             if (mineGrid[i][j] == FLAGGED_CELL || mineGrid[i][j] == FLAG_ON_MINE) {
-                UIImage * flagImage = [UIImage imageNamed:@"flagButton.png"];
+                UIImage * flagImage = [UIImage imageNamed:@"FlagButton"];
                 [flagImage drawInRect:imageRect];
             }
             else if(mineGrid[i][j] == MINE || mineGrid[i][j] == UNOPEND_CELL){
-                UIImage * unOpenedCellImage = [UIImage imageNamed:@"cell.png"];
+                UIImage * unOpenedCellImage = [UIImage imageNamed:@"Cell"];
                 [unOpenedCellImage drawInRect:imageRect];
             }
             else if(mineGrid[i][j] == OPENED_EMPTY_CELL){
@@ -98,7 +98,7 @@ int mineGrid [10][10];
             }
             if (self.gameOver) {
                 if (mineGrid[i][j] == MINE || mineGrid[i][j] == FLAG_ON_MINE) {
-                    UIImage * flagImage = [UIImage imageNamed:@"mine.png"];
+                    UIImage * flagImage = [UIImage imageNamed:@"Mine"];
                     [flagImage drawInRect:imageRect];
                 }
             }
