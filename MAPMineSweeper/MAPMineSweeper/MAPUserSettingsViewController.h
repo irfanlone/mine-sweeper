@@ -8,6 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSUInteger, MAPGameDifficultyLevel) {
+    MAPGameDifficultyLevelEasy,
+    MAPGameDifficultyLevelMedium,
+    MAPGameDifficultyLevelHard,
+    MAPGameDifficultyLevelExpert,
+};
+
+FOUNDATION_EXPORT NSString *const kGameLevelChangedNotification;
+
 @interface MAPUserSettingsViewController : UIViewController
 
 

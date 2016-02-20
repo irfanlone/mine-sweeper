@@ -17,22 +17,15 @@ static int FLAG_ON_MINE         = 103;
 static int UNOPEND_CELL         = 104;
 static int OPENED_EMPTY_CELL    = 0;
 
-// For anyone Referring to this code:
-// This class contains some logic code that needs to be in the controller e.g presenting the alert controller,
-//        determining Game Win, Game lost etc
-// The mineGrid should be moved to a seperate model to keep it clean
-// This class should only contain code the draws the MAPGameView based on the the Model.
-// I understand this is bad, I just clustered all this together for the purpose of getting it working initially.
+NSString *const kGameFinishedAlertNotification = @"GameFinishedAlertNotification";
 
-// TODO: fix these
-int row;
-int col;
 int mineGrid [10][10];
 
-// TODO: move this to user settings and set it based on the difficulty level selected
-int totalMines = 10;
-
 @interface MAPGameView()
+@property (nonatomic, assign) CGFloat dw, dh;  // width and height of cell
+@property (nonatomic, assign) CGFloat x, y;    // touch point coordinates
+@property (nonatomic, assign) int row, col;    // selected cell  and row in grid
+
 @property (nonatomic, strong) UILabel * gameTimerLabel;
 @property (nonatomic, strong) UILabel * gameScoreLabel;
 @property (nonatomic, strong) NSTimer * gameTimer;
@@ -40,12 +33,13 @@ int totalMines = 10;
 @property (nonatomic, assign) NSInteger noOfMinesFlaggedCorrectly;
 @property (nonatomic, assign) CGRect mineFieldFrame;
 @property (nonatomic, assign) BOOL gameOver;
+@property (nonatomic, assign) NSInteger totalMines;
 
 @end
 
 @implementation MAPGameView
 
-- (instancetype)init
+- (instancetype)initWithNoOfMines:(NSInteger)mines
 {
     self = [super init];
     if (self) {
@@ -65,6 +59,7 @@ int totalMines = 10;
         [self.gameTimerLabel.layer setCornerRadius:5.0f];
         [self addSubview:self.gameTimerLabel];
         
+        self.totalMines = mines;
         [self newGamePressed:nil];
     }
     return self;
@@ -188,40 +183,18 @@ int totalMines = 10;
     }
 }
 
-- (void)gameOverAlert {
-    // TODO: UIAlertView is deprecated in iOS8, Use UIAlertController
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Game Over, Your score is %@",self.currentScore]
-                                                 message:@"Would you like to play again?"
-                                                delegate:self
-                                       cancelButtonTitle:@"Ok"
-                                       otherButtonTitles:@"Cancel", nil];
-    [alertView show];
-}
-
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    // the user clicked OK
-    if (buttonIndex == 0) {
-        // Handle reset new game here
-        [self newGamePressed:nil];
-    }
-    else if (buttonIndex == 1) {
-    }
-}
-
-- (void)gameWinAlert {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Congratulations!! You Won"
-                                                        message:[NSString stringWithFormat:@"Your score is %@",self.currentScore]
-                                                       delegate:self
-                                              cancelButtonTitle:@"Ok"
-                                              otherButtonTitles:@"Cancel", nil];
-    [alertView show];
+- (void)postGameFinishedNotificationWithStatus:(NSNumber*)win {
+    [self.gameTimer invalidate];
+    self.gameTimerLabel.text = [NSString stringWithFormat:@"    %@",self.currentScore];
+    NSDictionary<NSString*,NSNumber*> * userInfo = @{@"win": win, @"score": self.currentScore};
+    [[NSNotificationCenter defaultCenter] postNotificationName:kGameFinishedAlertNotification object:self userInfo:userInfo];
 }
 
 - (void)resetGame {
     self.gameOver = NO;
     self.noOfMinesFlaggedCorrectly = 0;
     [UIView animateWithDuration:.01 animations:^{
-                         [self placeMinesInTheGridRandomly:totalMines];
+                         [self placeMinesInTheGridRandomly:self.totalMines];
                          [self setNeedsDisplay];
     } completion:^(BOOL finished){
     }];
@@ -254,8 +227,8 @@ int totalMines = 10;
                 mineGrid[self.row][self.col] = FLAGGED_CELL;
             }
             
-            if (self.noOfMinesFlaggedCorrectly == totalMines) {
-                [self gameWinAlert];
+            if (self.noOfMinesFlaggedCorrectly == self.totalMines) {
+                [self postGameFinishedNotificationWithStatus:@(1)];
             }
         }
     }
@@ -284,7 +257,7 @@ int totalMines = 10;
                 CGRect frame = self.frame;
                 frame.origin.x += 10; self.frame = frame; frame.origin.x -= 10; self.frame = frame;
                 [UIView commitAnimations];
-                [self gameOverAlert];
+                [self postGameFinishedNotificationWithStatus:@(0)];
                 self.gameOver = YES;
                 [self setNeedsDisplay];
                 return;

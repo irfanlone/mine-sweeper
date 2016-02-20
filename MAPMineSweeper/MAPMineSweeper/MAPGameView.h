@@ -8,17 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@class MAPMainViewController;
+FOUNDATION_EXPORT NSString *const kGameFinishedAlertNotification;
+
 @interface MAPGameView : UIView
 
-@property (nonatomic, assign) CGFloat dw, dh;  // width and height of cell
-@property (nonatomic, assign) CGFloat x, y;    // touch point coordinates
-@property (nonatomic, assign) int row, col;    // selected cell in cell grid
-@property (nonatomic, strong) MAPMainViewController * FirstViewController;
+- (instancetype)init NS_UNAVAILABLE;
 
+- (instancetype)initWithNoOfMines:(NSInteger)mines;
 
 - (void)tapSingleHandler:(UITapGestureRecognizer *)sender;
+
 - (void)tapDoubleHandler:(UITapGestureRecognizer *)sender;
-- (void)placeMinesInTheGridRandomly:(NSInteger)noOfMines;
 
 @end
