@@ -16,6 +16,7 @@ typedef NS_ENUM(NSUInteger, MAPGameDifficultyLevel) {
 };
 
 FOUNDATION_EXPORT NSString *const kGameLevelChangedNotification;
+FOUNDATION_EXPORT NSString *const kGameGridSizeChangedNotification;
 
 @interface MAPUserSettingsViewController : UIViewController
 

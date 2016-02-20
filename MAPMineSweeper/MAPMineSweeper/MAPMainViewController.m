@@ -16,6 +16,8 @@
 @property (nonatomic, assign) MAPGameDifficultyLevel currentGameLevel;
 @property (nonatomic, strong) MAPPlayer * currentPlayer;
 @property (nonatomic, assign) BOOL playerNameRequested;
+@property (nonatomic, assign) NSInteger noOfRows;
+@property (nonatomic, assign) NSInteger noOfCols;
 @end
 
 @implementation MAPPlayer
@@ -52,6 +54,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.noOfRows = 10; // default values
+    self.noOfCols = 10;
     self.playerNameRequested = NO;
     self.currentGameLevel = MAPGameDifficultyLevelMedium;
     self.currentHighScore = [[MAPHighestScore alloc] init];
@@ -62,18 +66,12 @@
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gameLevelChangedNotification:) name:kGameLevelChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gameFinishedNotification:) name:kGameFinishedAlertNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gameGridSizeChangedNotification:) name:kGameGridSizeChangedNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    UIAlertController *userAlert = [UIAlertController alertControllerWithTitle:@"Game Level Changed" message:@" Start a new game or Cancel to continue with the current game" preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *action = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self newGamePressed:nil];
-    }];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:nil];
-    [userAlert addAction:action];
-    [userAlert addAction:cancelAction];
-    [self presentViewController:userAlert animated:YES completion:nil];
+    [self alertUserWithSettingsChange];
 }
 
 - (IBAction)newGamePressed:(id)sender {
@@ -81,7 +79,7 @@
     if (!self.playerNameRequested) {
         [self requestPlayerName];
     }
-    self.gameView = [[MAPGameView alloc] initWithNoOfMines:[self getNumberOfMines]];
+    self.gameView = [[MAPGameView alloc] initWithNoOfMines:[self getNumberOfMines] rows:self.noOfRows andCols:self.noOfCols];
     self.view = self.gameView;
     UIView *tapView = self.view;  // this is our PuzzleView object
     UITapGestureRecognizer *tapDoubleGR = [[UITapGestureRecognizer alloc] initWithTarget:tapView action:@selector(tapDoubleHandler:)];
@@ -94,18 +92,55 @@
     self.view.backgroundColor = [UIColor whiteColor];
 }
 
+NSString *const kHighScoreKey = @"HighScoreKey";
+
++ (void)saveNewHighScore:(MAPHighestScore *)highScore {
+    NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:highScore];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:encodedObject forKey:kHighScoreKey];
+    [defaults synchronize];
+}
+
++ (MAPHighestScore *)getHighScore {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSData *encodedObject = [defaults objectForKey:kHighScoreKey];
+    MAPHighestScore *object = [NSKeyedUnarchiver unarchiveObjectWithData:encodedObject];
+    return object;
+}
+
 #pragma NOTIFICATIONS
 
-- (void)gameLevelChangedNotification:(NSNotification *)notification
-{
+- (void)gameLevelChangedNotification:(NSNotification *)notification {
+
     if ([[notification name] isEqualToString:kGameLevelChangedNotification]) {
-        
         NSDictionary<NSString *, id> *userInfo = notification.userInfo;
         NSNumber *number = userInfo[@"gameLevel"];
         if (number) {
             self.currentGameLevel = (MAPGameDifficultyLevel)number.intValue;
         }
     }
+}
+
+- (void)gameGridSizeChangedNotification:(NSNotification *)notification {
+  
+    if ([[notification name] isEqualToString:kGameGridSizeChangedNotification]) {
+        NSDictionary<NSString *, id> *userInfo = notification.userInfo;
+        NSNumber *number = userInfo[@"gridSize"];
+        if (number) {
+            [self setRowsAndColumnsBasedOnNewSliderValue:[number integerValue]];
+        }
+    }
+}
+
+- (void)alertUserWithSettingsChange {
+    UIAlertController *userAlert = [UIAlertController alertControllerWithTitle:@"Game settings changed" message:@" Start a new game or Cancel to complete the current game" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self newGamePressed:nil];
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:nil];
+    [userAlert addAction:action];
+    [userAlert addAction:cancelAction];
+    [self presentViewController:userAlert animated:YES completion:nil];
 }
 
 - (void)gameFinishedNotification:(NSNotification *)notification {
@@ -135,22 +170,6 @@
             [self presentViewController:userAlert animated:YES completion:nil];
         }
     }
-}
-
-NSString *const kHighScoreKey = @"HighScoreKey";
-
-+ (void)saveNewHighScore:(MAPHighestScore *)highScore {
-    NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:highScore];
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:encodedObject forKey:kHighScoreKey];
-    [defaults synchronize];
-}
-
-+ (MAPHighestScore *)getHighScore {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSData *encodedObject = [defaults objectForKey:kHighScoreKey];
-    MAPHighestScore *object = [NSKeyedUnarchiver unarchiveObjectWithData:encodedObject];
-    return object;
 }
 
 - (void) dealloc {
@@ -188,6 +207,22 @@ NSString *const kHighScoreKey = @"HighScoreKey";
         mines = 30;
     }
     return mines;
+}
+
+- (void)setRowsAndColumnsBasedOnNewSliderValue:(NSInteger)value {
+    if (value < 25) {
+        self.noOfRows = 6;
+        self.noOfCols = 6;
+    } else if (value < 50) {
+        self.noOfRows = 8;
+        self.noOfCols = 8;
+    } else if (value < 85) {
+        self.noOfRows = 10;
+        self.noOfCols = 10;
+    } else {
+        self.noOfRows = 12;
+        self.noOfCols = 12;
+    }
 }
 
 - (void)determineNewHighScore:(NSNumber*)score {

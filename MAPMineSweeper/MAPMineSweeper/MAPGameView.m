@@ -9,8 +9,6 @@
 #import "MAPGameView.h"
 #import "MAPMainViewController.h"
 
-static int kNumberOfRows        = 10;
-static int kNumberOfColumns     = 10;
 static int MINE                 = -1;
 static int FLAGGED_CELL         = 102;
 static int FLAG_ON_MINE         = 103;
@@ -19,13 +17,15 @@ static int OPENED_EMPTY_CELL    = 0;
 
 NSString *const kGameFinishedAlertNotification = @"GameFinishedAlertNotification";
 
-int mineGrid [10][10];
 
-@interface MAPGameView()
+@interface MAPGameView() {
+    int mineGrid [12][12];
+}
 @property (nonatomic, assign) CGFloat dw, dh;  // width and height of cell
 @property (nonatomic, assign) CGFloat x, y;    // touch point coordinates
 @property (nonatomic, assign) int row, col;    // selected cell and row in grid
-
+@property (nonatomic, assign) NSInteger noOfRows;
+@property (nonatomic, assign) NSInteger noOfCols;
 @property (nonatomic, strong) UILabel * gameTimerLabel;
 @property (nonatomic, strong) UILabel * gameScoreLabel;
 @property (nonatomic, strong) NSTimer * gameTimer;
@@ -39,7 +39,7 @@ int mineGrid [10][10];
 
 @implementation MAPGameView
 
-- (instancetype)initWithNoOfMines:(NSInteger)mines
+- (instancetype)initWithNoOfMines:(NSInteger)mines rows:(NSInteger)noOfRows andCols:(NSInteger)noOfCols
 {
     self = [super init];
     if (self) {
@@ -59,6 +59,8 @@ int mineGrid [10][10];
         [self.gameTimerLabel.layer setCornerRadius:5.0f];
         [self addSubview:self.gameTimerLabel];
         
+        self.noOfRows = noOfRows;
+        self.noOfCols = noOfCols;
         self.totalMines = mines;
         [self newGamePressed:nil];
     }
@@ -71,13 +73,13 @@ int mineGrid [10][10];
     self.mineFieldFrame     = frame;
     CGFloat width           = CGRectGetWidth( frame );
     CGFloat height          = CGRectGetHeight( frame );
-    self.dh                 = (height) / kNumberOfRows;
-    self.dw                 = (width) / kNumberOfColumns;
+    self.dh                 = (height) / self.noOfRows;
+    self.dw                 = (width) / self.noOfCols;
     
     UIFont *font = [UIFont fontWithName:@"arial" size:16];
     NSDictionary *attrsDictionary = [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName,[NSNumber numberWithFloat:1.0], NSBaselineOffsetAttributeName, nil];
-    for (int i = 0; i < kNumberOfColumns; ++i) {
-        for (int j = 0; j < kNumberOfRows; ++j) {
+    for (int i = 0; i < self.noOfCols; ++i) {
+        for (int j = 0; j < self.noOfRows; ++j) {
             CGRect imageRect = CGRectMake(self.mineFieldFrame.origin.x + (j*self.dw), self.mineFieldFrame.origin.y + (i*self.dh), self.dw, self.dh);
             CGPoint xy = CGPointMake(self.mineFieldFrame.origin.x + (j*self.dw) + (self.dw/3), self.mineFieldFrame.origin.y + (i*self.dh) + (self.dh/3));
             if (mineGrid[i][j] == FLAGGED_CELL || mineGrid[i][j] == FLAG_ON_MINE) {
@@ -105,12 +107,12 @@ int mineGrid [10][10];
         }
     }
     CGContextBeginPath( context );
-    for (int i = 0; i < kNumberOfRows+1; ++i) {
+    for (int i = 0; i < self.noOfRows+1; ++i) {
         // draw horizontal grid line
         CGContextMoveToPoint( context, frame.origin.x, frame.origin.y + (i * self.dh) );
         CGContextAddLineToPoint( context, frame. origin.x + width , frame.origin.y + (i * self.dh) );
     }
-    for (int i = 0; i < kNumberOfColumns+1; ++i) {
+    for (int i = 0; i < self.noOfCols+1; ++i) {
         // draw vertical grid line
         CGContextMoveToPoint( context,frame.origin.x + (i * self.dw), frame.origin.y );
         CGContextAddLineToPoint( context, frame.origin.x + (i * self.dw), frame.origin.y + height );
@@ -138,12 +140,12 @@ int mineGrid [10][10];
             } else {
                 startingCol = col - 1;
             }
-            if (row == kNumberOfRows-1) {
+            if (row == self.noOfRows-1) {
                 endingRow = row;
             } else {
                 endingRow = row + 1;
             }
-            if (col == kNumberOfColumns-1) {
+            if (col == self.noOfCols-1) {
                 endingCol = col;
             } else {
                 endingCol = col + 1;
@@ -171,14 +173,14 @@ int mineGrid [10][10];
 }
 
 - (void)placeMinesInTheGridRandomly:(NSInteger)noOfMines {
-    for (int i = 0; i < kNumberOfColumns; ++i) {
-        for (int j = 0; j < kNumberOfRows; ++j) {
+    for (int i = 0; i < self.noOfCols; ++i) {
+        for (int j = 0; j < self.noOfRows; ++j) {
             mineGrid[i][j] = UNOPEND_CELL;
         }
     }
     for (int mineCount = 0; mineCount < noOfMines; ++mineCount) {
-        int randomNumber1 = arc4random_uniform(kNumberOfRows)%kNumberOfRows;
-        int randomNumber2 = arc4random_uniform(kNumberOfColumns)%kNumberOfColumns;
+        NSInteger randomNumber1 = arc4random_uniform(self.noOfRows)%self.noOfRows;
+        NSInteger randomNumber2 = arc4random_uniform(self.noOfCols)%self.noOfCols;
         mineGrid[randomNumber1][randomNumber2] = MINE;
     }
 }

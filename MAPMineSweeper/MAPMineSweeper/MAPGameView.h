@@ -14,7 +14,7 @@ FOUNDATION_EXPORT NSString *const kGameFinishedAlertNotification;
 
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initWithNoOfMines:(NSInteger)mines;
+- (instancetype)initWithNoOfMines:(NSInteger)mines rows:(NSInteger)noOfRows andCols:(NSInteger)noOfCols;
 
 - (void)tapSingleHandler:(UITapGestureRecognizer *)sender;
 

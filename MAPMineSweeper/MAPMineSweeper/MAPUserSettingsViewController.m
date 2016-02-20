@@ -10,6 +10,7 @@
 #import "MAPMainViewController.h"
 
 NSString *const kGameLevelChangedNotification = @"GameLevelChangedNotification";
+NSString *const kGameGridSizeChangedNotification = @"GameGridSizeChangedNotification";
 
 @interface MAPUserSettingsViewController ()
 @property (nonatomic, assign) MAPGameDifficultyLevel currentLevel;
@@ -48,6 +49,14 @@ NSString *const kGameLevelChangedNotification = @"GameLevelChangedNotification";
     NSDictionary<NSString*,id> * userInfo = [NSDictionary dictionaryWithObject:@(self.currentLevel) forKey:@"gameLevel"];
     [[NSNotificationCenter defaultCenter] postNotificationName:kGameLevelChangedNotification object:self userInfo:userInfo];
 }
+
+- (IBAction)gameGridSizeChanged:(id)sender {
+    UISlider *slider = (UISlider *)sender;
+    float sliderValue = (float)[slider value] * 100;    
+    NSDictionary<NSString*,id> * userInfo = [NSDictionary dictionaryWithObject:@(sliderValue) forKey:@"gridSize"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kGameGridSizeChangedNotification object:self userInfo:userInfo];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

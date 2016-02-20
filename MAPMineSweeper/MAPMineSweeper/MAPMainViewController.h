@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-FOUNDATION_EXPORT NSString * kNumberOfMinesPrefKey;
 @interface MAPPlayer : NSObject<NSCoding>
 @property (nonatomic, strong) NSString * name;
 
