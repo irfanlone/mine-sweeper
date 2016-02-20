@@ -24,7 +24,7 @@ int mineGrid [10][10];
 @interface MAPGameView()
 @property (nonatomic, assign) CGFloat dw, dh;  // width and height of cell
 @property (nonatomic, assign) CGFloat x, y;    // touch point coordinates
-@property (nonatomic, assign) int row, col;    // selected cell  and row in grid
+@property (nonatomic, assign) int row, col;    // selected cell and row in grid
 
 @property (nonatomic, strong) UILabel * gameTimerLabel;
 @property (nonatomic, strong) UILabel * gameScoreLabel;

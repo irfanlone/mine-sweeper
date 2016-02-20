@@ -7,12 +7,15 @@
 //
 
 #import "MAPUserSettingsViewController.h"
+#import "MAPMainViewController.h"
 
 NSString *const kGameLevelChangedNotification = @"GameLevelChangedNotification";
 
 @interface MAPUserSettingsViewController ()
 @property (nonatomic, assign) MAPGameDifficultyLevel currentLevel;
 @property (weak, nonatomic) IBOutlet UISlider *gameDifficultyLevelSlider;
+@property (strong, nonatomic) IBOutlet UILabel *minTimeGameSolverPlayer;
+@property (strong, nonatomic) IBOutlet UILabel *minimumTime;
 
 @end
 
@@ -25,6 +28,11 @@ NSString *const kGameLevelChangedNotification = @"GameLevelChangedNotification";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    MAPHighestScore * highScore = [MAPMainViewController getHighScore];
+    if (highScore) {
+        self.minTimeGameSolverPlayer.text = highScore.player.name;
+        self.minimumTime.text = [NSString stringWithFormat:@" %@",highScore.score];
+    }
 }
 
 - (IBAction)gameDifficultyLevelChanged:(id)sender {

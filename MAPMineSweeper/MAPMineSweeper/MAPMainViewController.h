@@ -9,19 +9,21 @@
 #import <UIKit/UIKit.h>
 
 FOUNDATION_EXPORT NSString * kNumberOfMinesPrefKey;
-@interface MAPPlayer : NSObject
+@interface MAPPlayer : NSObject<NSCoding>
 @property (nonatomic, strong) NSString * name;
 
 @end
 
-
-@interface MAPHighestScores : NSObject
+@interface MAPHighestScore : NSObject<NSCoding>
 @property (nonatomic, strong) MAPPlayer * player;
-@property (nonatomic, assign) NSInteger score;
+@property (nonatomic, strong) NSNumber * score;
 
 @end
 
 @interface MAPMainViewController : UIViewController<UIAlertViewDelegate>
 
++ (void)saveNewHighScore:(MAPHighestScore *)highScore;
+
++ (MAPHighestScore *)getHighScore;
 @end
 
