@@ -6,3 +6,8 @@ Instructions:
 Single Tap to flag a mine.
 
 Double Tap to uncover an cell.
+
+![alt tag](https://github.com/irfanlone/mine-sweeper/blob/master/output_22hZZ8.gif)
+
+
+
