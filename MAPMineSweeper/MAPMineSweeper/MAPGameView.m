@@ -31,6 +31,7 @@ NSString *const kGameFinishedAlertNotification = @"GameFinishedAlertNotification
 @property (nonatomic, strong) NSTimer * gameTimer;
 @property (nonatomic, strong) NSNumber * currentScore;
 @property (nonatomic, assign) NSInteger noOfMinesFlaggedCorrectly;
+@property (nonatomic, assign) NSInteger noOfFlaggedCells;
 @property (nonatomic, assign) CGRect mineFieldFrame;
 @property (nonatomic, assign) BOOL gameOver;
 @property (nonatomic, assign) NSInteger totalMines;
@@ -195,6 +196,7 @@ NSString *const kGameFinishedAlertNotification = @"GameFinishedAlertNotification
 - (void)resetGame {
     self.gameOver = NO;
     self.noOfMinesFlaggedCorrectly = 0;
+    self.noOfFlaggedCells = 0;
     [UIView animateWithDuration:.01 animations:^{
                          [self placeMinesInTheGridRandomly:self.totalMines];
                          [self setNeedsDisplay];
@@ -219,22 +221,37 @@ NSString *const kGameFinishedAlertNotification = @"GameFinishedAlertNotification
             NSLog( @"row, col = %f, %f", row, col );
             if (mineGrid[self.row][self.col] == FLAGGED_CELL) {
                 mineGrid[self.row][self.col] = UNOPEND_CELL;
+                self.noOfFlaggedCells--;
             } else if(mineGrid[self.row][self.col] == FLAG_ON_MINE) {
                 mineGrid[self.row][self.col] = MINE;
                 self.noOfMinesFlaggedCorrectly -= 1;
+                self.noOfFlaggedCells--;
             } else if (mineGrid[self.row][self.col] == MINE) {
                 mineGrid[self.row][self.col] = FLAG_ON_MINE;
                 self.noOfMinesFlaggedCorrectly += 1;
+                self.noOfFlaggedCells++;
             } else {
                 mineGrid[self.row][self.col] = FLAGGED_CELL;
+                self.noOfFlaggedCells++;
             }
             
-            if (self.noOfMinesFlaggedCorrectly == self.totalMines) {
+            if (self.noOfMinesFlaggedCorrectly == self.totalMines  && self.noOfFlaggedCells == self.totalMines && [self allCellsPalyedByUser]) {
                 [self postGameFinishedNotificationWithStatus:@(1)];
             }
         }
     }
     [self setNeedsDisplay];
+}
+
+-(BOOL)allCellsPalyedByUser {
+    for (int i = 0; i<self.noOfRows; i++) {
+        for (int j = 0; j<self.noOfCols; j++) {
+            if (mineGrid[i][j] == UNOPEND_CELL) {
+                return NO;
+            }
+        }
+    }
+    return YES;
 }
 
 - (void)tapDoubleHandler:(UITapGestureRecognizer *)sender {
@@ -265,6 +282,9 @@ NSString *const kGameFinishedAlertNotification = @"GameFinishedAlertNotification
                 return;
             }
             [self setTheGridRecursivelyWithRow:row andColumn:col];
+            if (self.noOfMinesFlaggedCorrectly == self.totalMines  && self.noOfFlaggedCells == self.totalMines && [self allCellsPalyedByUser]) {
+                [self postGameFinishedNotificationWithStatus:@(1)];
+            }
         }
     }
     [self setNeedsDisplay];
